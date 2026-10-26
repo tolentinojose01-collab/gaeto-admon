@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GAETO Persianas</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a;line-height:1.5}
+.header{background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:72px;height:72px;background:#fff;border-radius:12px;padding:4px;object-fit:contain}
+.brand h1{font-size:20px;font-weight:700}
+.brand p{font-size:12px;opacity:.85}
+.badge{background:rgba(255,255,255,.15);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600}
+.tabs{display:flex;gap:6px;padding:12px 24px;background:#fff;border-bottom:1px solid #e2e8f0;overflow-x:auto}
+.tab{padding:9px 18px;border:none;background:transparent;color:#64748b;font-weight:600;font-size:14px;cursor:pointer;border-radius:999px;font-family:inherit}
+.tab.active{background:#1e3a8a;color:#fff}
+main{padding:24px;max-width:1300px;margin:0 auto}
+.view{display:none}.view.active{display:block}
+.title{font-size:22px;font-weight:800;margin-bottom:4px}
+.subtitle{color:#64748b;font-size:13px;margin-bottom:20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:#fff;border-radius:14px;padding:16px;border:1px solid #e2e8f0;display:flex;gap:12px;align-items:center}
+.kpi .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:20px}
+.kpi .ico.b{background:#dbeafe}.kpi .ico.g{background:#d1fae5}.kpi .ico.a{background:#fef3c7}.kpi .ico.p{background:#ede9fe}.kpi .ico.r{background:#fee2e2}
+.kpi small{display:block;color:#64748b;font-size:11px;text-transform:uppercase;font-weight:700}
+.kpi strong{font-size:22px}
+.card{background:#fff;border-radius:14px;padding:18px;border:1px solid #e2e8f0;margin-bottom:16px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.dash-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.grid2,.dash-grid{grid-template-columns:1fr}}
+.chart{display:flex;align-items:flex-end;gap:10px;height:170px;padding:10px 0 0}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:48px;border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,#6366f1,#0ea5e9);min-height:6px}
+.bar-wrap small{font-size:10px;color:#64748b;font-weight:800;text-transform:uppercase}
+.bar-val{font-size:10.5px;color:#0f172a;font-weight:700;white-space:nowrap}
+.list-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;gap:12px}
+.list-row:last-child{border:none}
+.list-row .info{flex:1;min-width:0}
+.list-row .info b{font-size:13.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list-row .info small{color:#64748b;font-size:11.5px}
+.list-row .amt{font-weight:700;font-size:13.5px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+label{display:block;font-size:11.5px;font-weight:700;color:#64748b;text-transform:uppercase}
+input,select{width:100%;margin-top:5px;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:14px;font-family:inherit;background:#fff}
+input:focus,select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.f2{grid-column:span 2}
+@media(max-width:640px){.f2{grid-column:auto}}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.btn{padding:10px 18px;border-radius:9px;border:none;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-p{background:#1e3a8a;color:#fff}.btn-g{background:#10b981;color:#fff}.btn-d{background:#ef4444;color:#fff}
+.btn-o{background:#fff;border:1.5px solid #e2e8f0;color:#0f172a}
+.btn-s{padding:6px 12px;font-size:12.5px;border-radius:7px}
+.btn-full{width:100%}
+.seg{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.summary{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;position:sticky;top:80px}
+.summary h3{font-size:16px;font-weight:800;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #e2e8f0;font-size:14px}
+.row:last-child{border:none}
+.row span:first-child{color:#64748b}.row span:last-child{font-weight:700}
+.row.total{font-size:18px;font-weight:800;color:#1e3a8a;padding-top:10px;border-top:2px solid #1e3a8a;border-bottom:none}
+.row.total span:first-child{color:#1e3a8a}
+.row.util span:first-child,.row.util span:last-child{color:#10b981}
+.box{background:#eef2ff;border-radius:10px;padding:10px 12px;margin:10px 0}
+.box .row{border:none;padding:3px 0}
+.item{border:1.5px dashed #dbe3ef;border-radius:12px;padding:14px;margin-bottom:12px;background:#fbfdff}
+.item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.chip{background:#eef2ff;color:#4338ca;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px}
+.icobtn{background:#f1f5f9;border:none;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:14px;color:#64748b}
+.icobtn:hover{background:#fee2e2;color:#ef4444}
+.formula{background:#f8fafc;border-radius:7px;padding:7px 10px;margin-top:8px;font-size:12px;color:#334155}
+.formula b{color:#1e3a8a}
+.hint-input{font-size:10.5px;color:#94a3b8;margin-top:2px}
+.table-wrap{overflow-x:auto;background:#fff;border-radius:12px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:800px}
+th{text-align:left;padding:11px 14px;background:#f8fafc;color:#64748b;font-size:10.5px;text-transform:uppercase;font-weight:800;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid #f1f5f9}
+tbody tr:hover{background:#f8fafc}
+.badge-tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.badge-c{background:#dcfce7;color:#166534}.badge-cr{background:#fef3c7;color:#92400e}
+.badge-p{background:#dcfce7;color:#166534}.badge-pd{background:#fee2e2;color:#991b1b}
+.badge-pa{background:#fef3c7;color:#92400e}
+.empty{text-align:center;padding:34px;color:#64748b;font-size:14px}
+.green{color:#10b981;font-weight:700}.red{color:#ef4444;font-weight:700}
+.muted{color:#64748b}
+.actions{display:flex;gap:3px;flex-wrap:wrap}
+.toast{position:fixed;bottom:20px;right:20px;background:#0f172a;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;transform:translateY(150px);opacity:0;transition:all .3s;z-index:500}
+.toast.show{transform:none;opacity:1}
+.toast.ok{background:#10b981}.toast.err{background:#ef4444}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:200}
+.modal.open{display:flex}
+.modal-box{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid #e2e8f0;position:sticky;top:0;background:#fff}
+.modal-head h3{font-size:17px;font-weight:800}
+.modal-body{padding:22px}
+.errores{position:fixed;top:0;left:0;right:0;background:#dc2626;color:#fff;padding:12px 20px;z-index:9999;font-family:monospace}
+.info{background:#eff6ff;border-left:4px solid #3b82f6;padding:12px 16px;border-radius:8px;font-size:13px;color:#1e40af;margin-bottom:14px}
+.warn{background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:8px;font-size:12.5px;color:#92400e;margin-bottom:14px}
+.chk{display:flex;align-items:center;gap:8px;padding-top:22px}
+.chk input{width:auto;padding:0;margin:0}
+.chk label{text-transform:none;font-size:13px;font-weight:500;color:#0f172a;margin:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px;margin-bottom:18px}
+.detail-grid .k{color:#64748b;font-size:10.5px;text-transform:uppercase;font-weight:700}
+.detail-grid .v{font-weight:600;font-size:14px;margin-top:2px}
+.pay-sum{display:flex;gap:12px;padding:12px;background:#f8fafc;border-radius:10px;margin-bottom:14px;flex-wrap:wrap}
+.pay-sum > div{flex:1;min-width:100px}
+.pay-sum .k{color:#64748b;font-size:10.5px;text-transform:uppercase;font-weight:700;display:block}
+.pay-sum .v{font-size:17px;font-weight:800}
+.badge-live{display:inline-block;background:#dcfce7;color:#166534;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;margin-left:6px}
+.filtro-fechas{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.filtro-fechas > div{flex:0 0 auto;min-width:150px}
+.filtro-fechas .btns{display:flex;gap:6px;flex-wrap:wrap}
+.hist-kpis{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+</style>
+</head>
+<body>
+
+<div id="errores" class="errores" style="display:none"></div>
+
+<header class="header">
+  <div class="brand">
+    <img id="logo" src="https://i.postimg.cc/c49f5pfZ/gaeto100.jpg" alt="Logo">
+    <div><h1 id="marca">GAETO FÁBRICA DE PERSIANAS</h1><p>Ventas · Costos · Utilidad · Cobranza</p></div>
+  </div>
+  <div class="badge" id="fecha-hoy"></div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="ver('dashboard')">📊 Panel</button>
+  <button class="tab" onclick="ver('nueva')">➕ Nueva venta</button>
+  <button class="tab" onclick="ver('ventas')">🧾 Ventas</button>
+  <button class="tab" onclick="ver('cobros')">📅 Cobros</button>
+  <button class="tab" onclick="ver('historial')">📋 Historial</button>
+  <button class="tab" onclick="ver('config')">⚙️ Ajustes</button>
+</nav>
+
+<main>
+  <section id="view-dashboard" class="view active">
+    <div class="title">Panel general</div>
+    <div class="subtitle">Resumen de ventas, utilidad y cobranza</div>
+    <div class="kpis" id="kpis"></div>
+    <div class="dash-grid">
+      <div class="card" style="margin:0"><h3>📈 Ventas últimos 6 meses</h3><div id="chart"></div></div>
+      <div class="card" style="margin:0"><h3>⏰ Próximos cobros</h3><div id="proximos"></div></div>
+    </div>
+    <div class="card"><h3>🧾 Últimas ventas</h3><div id="ultimas"></div></div>
+  </section>
+
+  <section id="view-nueva" class="view">
+    <div class="title">Nueva venta</div>
+    <div class="subtitle">Captura y el sistema calcula todo automáticamente</div>
+    <div class="warn">💡 Acepta <b>1.80</b>, <b>1,80</b>, <b>.82</b> o <b>,82</b>.</div>
+    <div class="layout">
+      <div>
+        <div class="card">
+          <h3>👤 Datos del cliente</h3>
+          <div class="form-grid">
+            <div><label>Fecha</label><input type="date" id="fecha"></div>
+            <div class="f2"><label>Nombre *</label><input id="nombre" placeholder="Ej. José Tolentino"></div>
+            <div class="f2"><label>Dirección</label><input id="dir" placeholder="Calle, número, colonia"></div>
+            <div><label>C.P.</label><input id="cp" placeholder="91898"></div>
+            <div><label>Teléfono</label><input id="tel" placeholder="228 000 0000"></div>
+            <div><label>Otro teléfono</label><input id="tel2" placeholder="Opcional"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>💳 Condiciones de pago <span class="badge-live" id="badge-anticipo"></span></h3>
+          <div class="seg">
+            <button id="btn-cont" class="btn btn-p btn-s" onclick="setCond('contado')">💵 Contado</button>
+            <button id="btn-cred" class="btn btn-o btn-s" onclick="setCond('credito')">💳 Crédito</button>
+          </div>
+          <div class="form-grid">
+            <div><label>Anticipo %</label><input type="text" inputmode="decimal" id="anticipo" oninput="antTouched=true;recalc()" onblur="normInput(this)"></div>
+            <div><label>Semanas</label><input type="text" inputmode="numeric" id="semanas" value="4" oninput="recalc()" onblur="normInput(this)"></div>
+            <div class="chk"><input type="checkbox" id="ant-ya" checked><label for="ant-ya">Anticipo ya recibido</label></div>
+          </div>
+          <div class="info" id="hint" style="margin-top:14px"></div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <h3 style="margin:0">🪟 Persianas</h3>
+            <button class="btn btn-o btn-s" onclick="addItem()">➕ Agregar pieza</button>
+          </div>
+          <div id="items"></div>
+        </div>
+      </div>
+      <aside class="summary">
+        <h3>🧮 Resumen</h3>
+        <div class="row"><span>Superficie</span><span id="r-m2">0.00 m²</span></div>
+        <div class="row"><span>Subtotal</span><span id="r-sub">$0.00</span></div>
+        <div class="row"><span>Instalación</span><span id="r-inst">$0.00</span></div>
+        <div class="row total"><span>TOTAL</span><span id="r-total">$0.00</span></div>
+        <div class="box">
+          <div class="row"><span>Anticipo (<b id="r-pct">50</b>%)</span><span id="r-ant">$0.00</span></div>
+          <div class="row"><span>Saldo</span><span id="r-saldo">$0.00</span></div>
+          <div class="row"><span>Pago semanal</span><span id="r-cuota">$0.00</span></div>
+        </div>
+        <div class="row"><span>Costo proveedor</span><span id="r-costo">$0.00</span></div>
+        <div class="row util"><span>Utilidad bruta</span><span id="r-util">$0.00</span></div>
+        <div class="row"><span>Margen</span><span id="r-margen">0%</span></div>
+        <button class="btn btn-g btn-full" style="margin-top:16px" onclick="guardarVenta()">💾 Guardar venta</button>
+      </aside>
+    </div>
+  </section>
+
+  <section id="view-ventas" class="view">
+    <div class="title">Ventas</div>
+    <div class="subtitle">Historial con estado, saldo y acciones</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <input id="buscar" placeholder="🔍 Buscar…" style="min-width:220px;margin:0" oninput="renderVentas()">
+      <select id="filtroCond" style="min-width:160px;margin:0" onchange="renderVentas()">
+        <option value="">Todas</option><option value="contado">Contado</option><option value="credito">Crédito</option>
+      </select>
+      <select id="filtroEst" style="min-width:160px;margin:0" onchange="renderVentas()">
+        <option value="">Todos</option><option value="pendiente">Pendientes</option><option value="liquidada">Liquidadas</option>
+      </select>
+      <button class="btn btn-o btn-s" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      <button class="btn btn-o btn-s" onclick="exportarExcel()" style="background:#10b981;color:#fff;border:none">📊 Exportar Excel</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Folio</th><th>Fecha</th><th>Cliente</th><th>Cond.</th><th>m²</th><th>Total</th><th>Pagado</th><th>Saldo</th><th>Utilidad</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="ventas-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="view-cobros" class="view">
+    <div class="title">Cobros pendientes</div>
+    <div class="subtitle">Semanales de crédito y saldos de contado</div>
+    <div class="kpis" id="cobros-kpis"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Cliente</th><th>Folio</th><th>Concepto</th><th>Vence</th><th>Monto</th><th>Restante</th><th>Estado</th><th>Acción</th></tr></thead>
+        <tbody id="cobros-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="view-historial" class="view">
+    <div class="title">Historial por fechas</div>
+    <div class="subtitle">Ventas, cobrado, utilidad y pagos al proveedor</div>
+    <div class="card">
+      <h3>📅 Filtrar por rango de fechas</h3>
+      <div class="filtro-fechas">
+        <div><label>Desde</label><input type="date" id="hist-desde" onchange="renderHistorial()"></div>
+        <div><label>Hasta</label><input type="date" id="hist-hasta" onchange="renderHistorial()"></div>
+        <div class="btns">
+          <button class="btn btn-o btn-s" onclick="histHoy()">Hoy</button>
+          <button class="btn btn-o btn-s" onclick="histSemana()">Esta semana</button>
+          <button class="btn btn-o btn-s" onclick="histMes()">Este mes</button>
+          <button class="btn btn-o btn-s" onclick="histMesPasado()">Mes pasado</button>
+          <button class="btn btn-o btn-s" onclick="histAnio()">Este año</button>
+          <button class="btn btn-p btn-s" onclick="histTodo()">Todo</button>
+        </div>
+      </div>
+    </div>
+    <div class="kpis hist-kpis" id="hist-kpis"></div>
+    <div class="card">
+      <h3>📋 Ventas del periodo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Cliente</th><th>Cond.</th><th>Total</th><th>Pagado</th><th>Saldo</th><th>Utilidad</th><th>Pago proveedor</th><th>Estado</th></tr></thead>
+          <tbody id="hist-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-config" class="view">
+    <div class="title">Ajustes</div>
+    <div class="subtitle">Precios, costos y política de crédito</div>
+    <div class="warn">💡 Edita los campos que necesites y haz clic en <b>Guardar</b> al final.</div>
+
+    <div class="card">
+      <h3>🏢 Negocio y logo</h3>
+      <div class="form-grid">
+        <div><label>Nombre</label><input id="c-negocio"></div>
+        <div><label>Teléfono</label><input id="c-tel"></div>
+        <div class="f2"><label>Dirección</label><input id="c-dir"></div>
+        <div class="f2"><label>URL del logo</label><input id="c-logo" placeholder="https://..."></div>
+      </div>
+      <div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:10px;display:flex;align-items:center;gap:12px">
+        <img id="logo-prev" src="https://i.postimg.cc/c49f5pfZ/gaeto100.jpg" style="width:80px;height:80px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid #e2e8f0;padding:4px">
+        <div><b style="font-size:13px">Vista previa</b><p style="font-size:12px;color:#64748b">Se usa en el encabezado y en las impresiones</p></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>🪟 Tela Screen</h3>
+        <div class="form-grid">
+          <div><label>Precio m² contado</label><input type="text" inputmode="decimal" id="c-screen-p"></div>
+          <div><label>Precio m² crédito</label><input type="text" inputmode="decimal" id="c-screen-pcr"></div>
+          <div><label>Costo m² (proveedor)</label><input type="text" inputmode="decimal" id="c-screen-c"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>🪟 Tela Blackout</h3>
+        <div class="form-grid">
+          <div><label>Precio m² contado</label><input type="text" inputmode="decimal" id="c-black-p"></div>
+          <div><label>Precio m² crédito</label><input type="text" inputmode="decimal" id="c-black-pcr"></div>
+          <div><label>Costo m² (proveedor)</label><input type="text" inputmode="decimal" id="c-black-c"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💳 Política de crédito y anticipos</h3>
+      <div class="form-grid">
+        <div><label>Recargo m² (%)</label><input type="text" inputmode="decimal" id="c-recargo"></div>
+        <div><label>Anticipo contado (%)</label><input type="text" inputmode="decimal" id="c-ant-c"></div>
+        <div><label>Anticipo crédito (%)</label><input type="text" inputmode="decimal" id="c-ant-cr"></div>
+        <div><label>Semanas</label><input type="text" inputmode="numeric" id="c-semanas"></div>
+      </div>
+      <button class="btn btn-o btn-s" style="margin-top:12px" onclick="aplicarRecargoManual()">🔁 Calcular precios crédito con este recargo</button>
+    </div>
+
+    <div class="card">
+      <h3>🔧 Instalación</h3>
+      <div class="form-grid">
+        <div><label>Precio al cliente</label><input type="text" inputmode="decimal" id="c-inst-p"></div>
+        <div><label>Costo</label><input type="text" inputmode="decimal" id="c-inst-c"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-p" onclick="guardarConfig()">💾 Guardar</button>
+      <button class="btn btn-o" onclick="exportarJSON()">⬇️ Respaldo JSON</button>
+      <button class="btn btn-o" onclick="document.getElementById('imp').click()">⬆️ Importar</button>
+      <input type="file" id="imp" accept="application/json" style="display:none" onchange="importarJSON(event)">
+      <button class="btn btn-d" onclick="borrarTodo()">🗑️ Borrar todo</button>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="modal" onclick="if(event.target.id==='modal')cerrarModal()">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modal-title">Detalle</h3><button class="icobtn" onclick="cerrarModal()">✕</button></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div><script>
+window.addEventListener('error',function(e){var el=document.getElementById('errores');if(el){el.style.display='block';el.textContent='⚠ '+(e.message||'Error')+' (línea '+e.lineno+')';}});
+function $(id){return document.getElementById(id);}
+function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+function parseNum(v){if(v==null)return 0;if(typeof v==='number')return isFinite(v)?v:0;var s=String(v).trim();if(!s)return 0;s=s.replace(/[^0-9.,\-]/g,'');if(!s||s==='.'||s===','||s==='-')return 0;var c=s.indexOf(',')!==-1,p=s.indexOf('.')!==-1,n;if(c&&p){if(s.lastIndexOf(',')>s.lastIndexOf('.'))s=s.replace(/\./g,'').replace(',','.');else s=s.replace(/,/g,'');n=parseFloat(s);}else if(c){n=parseFloat(s.replace(',','.'));}else{n=parseFloat(s);}return isFinite(n)?n:0;}
+function normInput(el){var v=(el.value||'').trim();if(!v)return;if(/[.,]$/.test(v))return;if(/^[.,]/.test(v))v='0'+v;if(v.indexOf(',')!==-1&&v.indexOf('.')===-1)v=v.replace(',','.');else if(v.indexOf(',')!==-1&&v.indexOf('.')!==-1){if(v.lastIndexOf(',')>v.lastIndexOf('.'))v=v.replace(/\./g,'').replace(',','.');else v=v.replace(/,/g,'');}if(isFinite(parseFloat(v)))el.value=v;}
+function round2(n){var x=Number(n);if(!isFinite(x))x=0;return Math.round((x+Number.EPSILON)*100)/100;}
+function money(n){try{return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(Number(n)||0);}catch(e){return '$'+(Number(n)||0).toFixed(2);}}
+function num(n){var x=Number(n);if(!isFinite(x))x=0;return x.toFixed(2);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function hoy(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function addDias(iso,dias){var d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+dias);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fFecha(iso){if(!iso)return '—';var d=new Date(iso+'T00:00:00');return d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});}
+function aviso(msg,tipo){var t=$('toast');t.textContent=msg;t.className='toast show '+(tipo||'');clearTimeout(t._tm);t._tm=setTimeout(function(){t.className='toast '+(tipo||'');},3000);}
+function abrirPreview(html){
+  var w=window.open('','_blank');if(!w){aviso('Permite ventanas emergentes','err');return;}
+  w.document.write(html);
+  w.document.body.insertAdjacentHTML('beforeend','<div class="no-print" style="position:fixed;top:12px;right:12px;z-index:9999;display:flex;gap:8px"><button onclick="window.print()" style="padding:12px 24px;background:#1e3a8a;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);font-family:Arial">🖨️ Imprimir</button><button onclick="window.close()" style="padding:12px 24px;background:#fff;color:#64748b;border:1.5px solid #cbd5e1;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:Arial">✕ Cerrar</button></div><style>@media print{.no-print{display:none!important}body{padding:0!important}}</style>');
+  w.document.close();
+}
+
+var KEY='gaeto_v13';
+var DEFAULTS={negocio:'GAETO FÁBRICA DE PERSIANAS',tel:'',dir:'',logo:'https://i.postimg.cc/c49f5pfZ/gaeto100.jpg',telas:[{id:'screen',nombre:'Screen',precio:750,precioCredito:825,costo:350},{id:'blackout',nombre:'Blackout',precio:800,precioCredito:880,costo:400}],recargo:10,antContado:50,antCredito:40,semanas:4,precioInst:150,costoInst:150};
+
+var state=(function(){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&s.config){s.config=Object.assign({},JSON.parse(JSON.stringify(DEFAULTS)),s.config);if(!s.config.telas||s.config.telas.length<2)s.config.telas=JSON.parse(JSON.stringify(DEFAULTS.telas));else s.config.telas.forEach(function(t){if(t.precioCredito==null||t.precioCredito<=0)t.precioCredito=round2((t.precio||0)*(1+(s.config.recargo||10)/100));if(t.costo==null)t.costo=0;if(t.precio==null)t.precio=0;});}if(s&&Array.isArray(s.ventas))return s;}}catch(e){console.warn('estado inválido');}return{config:JSON.parse(JSON.stringify(DEFAULTS)),ventas:[],folio:1};})();
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){console.warn('No se pudo guardar',e);}}
+function cfg(){return state.config;}
+function getTela(id){var arr=cfg().telas||[];for(var i=0;i<arr.length;i++)if(arr[i].id===id)return arr[i];return arr[0]||{id:'screen',nombre:'Screen',precio:750,precioCredito:825,costo:350};}
+function precioTela(id,cond){var t=getTela(id);if(cond==='credito'){if(t.precioCredito!=null&&t.precioCredito>0)return t.precioCredito;return round2(t.precio*(1+(cfg().recargo||0)/100));}return t.precio;}
+function pagado(v){if(!v||!Array.isArray(v.pagos))return 0;var s=0;for(var i=0;i<v.pagos.length;i++)s+=parseNum(v.pagos[i].monto);return round2(s);}
+function saldo(v){if(!v)return 0;return round2((v.total||0)-pagado(v));}
+function estado(v){if(saldo(v)<=0.009)return 'Liquidada';return pagado(v)>0?'Parcial':'Pendiente';}
+function badgeEstado(v){var e=estado(v);var cls=e==='Liquidada'?'badge-p':(e==='Parcial'?'badge-pa':'badge-pd');return '<span class="badge-tag '+cls+'">'+e+'</span>';}
+function badgeCond(c){return c==='credito'?'<span class="badge-tag badge-cr">Crédito</span>':'<span class="badge-tag badge-c">Contado</span>';}
+function cuotas(v){if(!v)return[];var out=[];var ant=round2(v.anticipo||0);if(ant>0)out.push({concepto:'Anticipo',fecha:v.fecha,monto:ant});var rest=round2((v.total||0)-ant);if(rest>0.009){if(v.condicion==='credito'){var n=v.semanas||cfg().semanas||4;var c=round2(rest/n);for(var i=1;i<=n;i++){var m=(i===n)?round2(rest-c*(n-1)):c;out.push({concepto:'Semana '+i,fecha:addDias(v.fecha,7*i),monto:m});}}else out.push({concepto:'Saldo contado',fecha:v.fecha,monto:rest});}var acum=pagado(v);out.forEach(function(c){if(acum>=c.monto-0.005){c.estado='pagada';c.restante=0;acum=round2(acum-c.monto);}else if(acum>0.005){c.estado='parcial';c.restante=round2(c.monto-acum);acum=0;}else{c.estado='pendiente';c.restante=round2(c.monto);}});return out;}
+function proxCuota(v){var cs=cuotas(v);for(var i=0;i<cs.length;i++)if(cs[i].restante>0.009)return cs[i];return null;}
+function cobrosPend(){var h=hoy();var l=[];state.ventas.forEach(function(v){cuotas(v).forEach(function(c){if(c.restante>0.009)l.push({v:v,concepto:c.concepto,fecha:c.fecha,monto:c.monto,restante:c.restante,vencida:c.fecha<h});});});return l.sort(function(a,b){return a.fecha.localeCompare(b.fecha);});}
+
+function ver(name){$$('.view').forEach(function(x){x.classList.remove('active');});var v=$('view-'+name);if(v)v.classList.add('active');$$('.tab').forEach(function(t){var oc=t.getAttribute('onclick')||'';t.classList.toggle('active',oc.indexOf("'"+name+"'")!==-1);});window.scrollTo(0,0);if(name==='dashboard')renderDash();if(name==='ventas')renderVentas();if(name==='cobros')renderCobros();if(name==='config')renderConfig();if(name==='nueva'){sincAnticipo();recalc();}if(name==='historial')renderHistorial();}
+function sincAnticipo(){if(antTouched)return;var v=cond==='credito'?cfg().antCredito:cfg().antContado;$('anticipo').value=v;}
+
+function renderDash(){var vs=state.ventas||[];var tv=0,tc=0,pdc=0,cob=0,mt=0;vs.forEach(function(v){tv+=(v.total||0);tc+=(v.costo||0);pdc+=saldo(v);cob+=pagado(v);mt+=(v.m2||0);});var util=round2(tv-tc);var marg=tv>0?(util/tv*100):0;$('kpis').innerHTML='<div class="kpi"><div class="ico b">🧾</div><div><small>Ventas</small><strong>'+money(tv)+'</strong><small style="text-transform:none;font-weight:500">'+vs.length+' venta(s) · '+num(mt)+' m²</small></div></div>'+'<div class="kpi"><div class="ico g">📈</div><div><small>Utilidad</small><strong>'+money(util)+'</strong><small style="text-transform:none;font-weight:500">Margen '+marg.toFixed(1)+'%</small></div></div>'+'<div class="kpi"><div class="ico a">⏳</div><div><small>Por cobrar</small><strong>'+money(pdc)+'</strong></div></div>'+'<div class="kpi"><div class="ico p">💰</div><div><small>Cobrado</small><strong>'+money(cob)+'</strong></div></div>';var hoyDate=new Date();var meses=[];for(var i=5;i>=0;i--){var d=new Date(hoyDate.getFullYear(),hoyDate.getMonth()-i,1);meses.push({y:d.getFullYear(),m:d.getMonth()});}var data=meses.map(function(mm){var t=vs.filter(function(v){if(!v.fecha)return false;var d=new Date(v.fecha+'T00:00:00');return d.getFullYear()===mm.y&&d.getMonth()===mm.m;}).reduce(function(s,v){return s+(v.total||0);},0);return{label:new Date(mm.y,mm.m,1).toLocaleDateString('es-MX',{month:'short'}),total:t};});var max=1;data.forEach(function(x){if(x.total>max)max=x.total;});if(vs.length){$('chart').innerHTML='<div class="chart">'+data.map(function(x){var alto=Math.max(6,(x.total/max)*100);return '<div class="bar-wrap"><div class="bar-val">'+(x.total>0?money(x.total).replace('MX$','$'):'')+'</div><div class="bar" style="height:'+alto+'%"></div><small>'+x.label+'</small></div>';}).join('')+'</div>';}else $('chart').innerHTML='<div class="empty">Aún no hay ventas.</div>';var pend=cobrosPend().slice(0,5);if(pend.length){$('proximos').innerHTML=pend.map(function(c){return '<div class="list-row"><div class="info"><b>'+esc(c.v.cliente.nombre)+'</b><small>'+c.v.folio+' · '+c.concepto+' · '+fFecha(c.fecha)+(c.vencida?' · <b style="color:#dc2626">Vencido</b>':'')+'</small></div><div class="amt">'+money(c.restante)+'</div></div>';}).join('');}else $('proximos').innerHTML='<div class="empty">🎉 Sin cobros pendientes.</div>';var ul=vs.slice(0,5);if(!ul.length)$('ultimas').innerHTML='<div class="empty">Aún no hay ventas. Ve a <b>Nueva venta</b>.</div>';else $('ultimas').innerHTML=ul.map(function(v){return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;gap:12px"><div style="flex:1;min-width:0"><b style="font-size:14px">'+esc(v.cliente.nombre)+'</b><br><small style="color:#64748b">'+v.folio+' · '+fFecha(v.fecha)+' · '+badgeCond(v.condicion)+'</small></div><div style="text-align:right"><b>'+money(v.total)+'</b><br><small style="color:#64748b">Saldo: '+money(saldo(v))+'</small></div><button class="btn btn-o btn-s" onclick="verDetalle(\''+v.id+'\')">Ver</button></div>';}).join('');}
+
+var cond='contado';
+var antTouched=false;
+
+function setCond(c){cond=c;antTouched=false;$('btn-cont').className='btn btn-s '+(c==='contado'?'btn-p':'btn-o');$('btn-cred').className='btn btn-s '+(c==='credito'?'btn-p':'btn-o');$('anticipo').value=c==='credito'?cfg().antCredito:cfg().antContado;$('semanas').disabled=(c!=='credito');$('hint').innerHTML=c==='credito'?'💳 Precio de crédito. Anticipo <b>'+cfg().antCredito+'%</b> y saldo en <b>'+cfg().semanas+' semanas</b>.':'💵 Precio de contado. Anticipo <b>'+cfg().antContado+'%</b>.';$$('#items .item').forEach(function(r){var sel=r.querySelector('.i-tela');if(sel)r.querySelector('.i-precio').value=precioTela(sel.value,c);});recalc();}
+
+function addItem(){var id=cfg().telas[0].id;var t=getTela(id);var opts=cfg().telas.map(function(x){return '<option value="'+x.id+'"'+(x.id===id?' selected':'')+'>'+esc(x.nombre)+'</option>';}).join('');var html='<div class="item"><div class="item-head"><span class="chip">Pieza</span><button class="icobtn" onclick="quitarItem(this)">✕</button></div><div class="form-grid"><div><label>Tela</label><select class="i-tela" onchange="cambiarTela(this)">'+opts+'</select></div><div><label>Ancho (m)</label><input class="i-ancho" type="text" inputmode="decimal" value="1" oninput="recalc()" onblur="normInput(this)"><div class="hint-input">Ej: 1.80 o 1,80</div></div><div><label>Alto (m)</label><input class="i-alto" type="text" inputmode="decimal" value="1" oninput="recalc()" onblur="normInput(this)"><div class="hint-input">Ej: 1.30 o 1,30</div></div><div><label>Precio m²</label><input class="i-precio" type="text" inputmode="decimal" value="'+precioTela(id,cond)+'" oninput="recalc()" onblur="normInput(this)"></div><div><label>Costo m²</label><input class="i-costo" type="text" inputmode="decimal" value="'+t.costo+'" oninput="recalc()" onblur="normInput(this)"></div><div><label>Precio instalación</label><input class="i-insp" type="text" inputmode="decimal" value="'+cfg().precioInst+'" oninput="recalc()" onblur="normInput(this)"></div><div><label>Costo instalación</label><input class="i-insc" type="text" inputmode="decimal" value="'+cfg().costoInst+'" oninput="recalc()" onblur="normInput(this)"></div></div><div class="formula i-form">—</div><div style="margin-top:8px;font-size:12px;color:#64748b"><span>m²: <b class="i-m2" style="color:#0f172a">—</b></span> · <span>Costo: <b class="i-cos" style="color:#0f172a">—</b></span></div></div>';$('items').insertAdjacentHTML('beforeend',html);recalc();}
+
+function quitarItem(btn){if($$('#items .item').length<=1){aviso('Debe haber al menos una pieza','err');return;}btn.closest('.item').remove();recalc();}
+function cambiarTela(sel){var r=sel.closest('.item');var t=getTela(sel.value);r.querySelector('.i-precio').value=precioTela(sel.value,cond);if(t)r.querySelector('.i-costo').value=t.costo;r.querySelector('.i-insp').value=cfg().precioInst;r.querySelector('.i-insc').value=cfg().costoInst;recalc();}
+function leerItems(){return $$('#items .item').map(function(r){var sel=r.querySelector('.i-tela');var tid=sel?sel.value:cfg().telas[0].id;var t=getTela(tid);return{tela:tid,telaNombre:t?t.nombre:'—',ancho:parseNum(r.querySelector('.i-ancho').value),alto:parseNum(r.querySelector('.i-alto').value),precioM2:parseNum(r.querySelector('.i-precio').value),costoM2:parseNum(r.querySelector('.i-costo').value),instPrecio:parseNum(r.querySelector('.i-insp').value),instCosto:parseNum(r.querySelector('.i-insc').value)};});}
+
+function recalc(){var its=leerItems();var pct=parseNum($('anticipo').value);var sem=parseInt(parseNum($('semanas').value),10)||cfg().semanas||4;var m2=0,sub=0,inst=0,costo=0;its.forEach(function(i){var s=i.ancho*i.alto;m2+=s;sub+=s*i.precioM2;inst+=i.instPrecio;costo+=s*i.costoM2+i.instCosto;});var total=round2(sub+inst);var ant=round2(total*pct/100);var sal=round2(total-ant);var util=round2(total-costo);var marg=total>0?(util/total*100):0;var cuo=(cond==='credito'&&sem>0)?round2(sal/sem):sal;$$('#items .item').forEach(function(r,idx){var it=its[idx];if(!it)return;var s=round2(it.ancho*it.alto);var sb=round2(s*it.precioM2);var im=round2(sb+it.instPrecio);var co=round2(s*it.costoM2+it.instCosto);r.querySelector('.i-m2').textContent=num(s)+' m²';r.querySelector('.i-cos').textContent=money(co);r.querySelector('.i-form').innerHTML='<b>'+num(it.ancho)+'</b> × <b>'+num(it.alto)+'</b> = <b>'+num(s)+' m²</b> · <b>'+num(s)+'</b> m² × <b>'+money(it.precioM2)+'</b> = <b>'+money(sb)+'</b> · + instalación = <b style="color:#1e3a8a">'+money(im)+'</b>';});$('r-m2').textContent=num(m2)+' m²';$('r-sub').textContent=money(sub);$('r-inst').textContent=money(inst);$('r-total').textContent=money(total);$('r-pct').textContent=pct;$('r-ant').textContent=money(ant);$('r-saldo').textContent=money(sal);$('r-cuota').textContent=cond==='credito'?money(cuo)+' ×'+sem:money(sal);$('r-costo').textContent=money(costo);$('r-util').textContent=money(util);$('r-margen').textContent=marg.toFixed(1)+'%';$('badge-anticipo').textContent=(cond==='credito'?'Crédito ':'Contado ')+pct+'% anticipo';}
+
+function resetNueva(){$('fecha').value=hoy();$('nombre').value='';$('dir').value='';$('cp').value='';$('tel').value='';$('tel2').value='';$('ant-ya').checked=true;$('items').innerHTML='';antTouched=false;setCond('contado');addItem();}
+
+function guardarVenta(){var nombre=($('nombre').value||'').trim();if(!nombre){aviso('Escribe el nombre del cliente','err');$('nombre').focus();return;}var its=leerItems().filter(function(i){return i.ancho>0&&i.alto>0;});if(!its.length){aviso('Agrega al menos una pieza válida','err');return;}var pct=parseNum($('anticipo').value);var sem=parseInt(parseNum($('semanas').value),10)||cfg().semanas||4;var antRec=$('ant-ya').checked;var fec=$('fecha').value||hoy();var m2=0,sub=0,inst=0,costo=0;its.forEach(function(i){var s=i.ancho*i.alto;i.m2=round2(s);i.importe=round2(s*i.precioM2+i.instPrecio);i.costoTotal=round2(s*i.costoM2+i.instCosto);m2+=s;sub+=s*i.precioM2;inst+=i.instPrecio;costo+=i.costoM2*s+i.instCosto;});var total=round2(sub+inst);var ant=round2(total*pct/100);var pagos=[];if(antRec&&ant>0.009)pagos.push({fecha:fec,monto:ant,nota:'Anticipo recibido'});var venta={id:'v'+Date.now()+Math.random().toString(36).slice(2,7),folio:'GAETO-'+String(state.folio||1).padStart(4,'0'),fecha:fec,cliente:{nombre:nombre,dir:($('dir').value||'').trim(),cp:($('cp').value||'').trim(),tel:($('tel').value||'').trim(),tel2:($('tel2').value||'').trim()},condicion:cond,anticipoPct:pct,semanas:cond==='credito'?sem:0,items:its,m2:round2(m2),subtotal:round2(sub),instalacion:round2(inst),total:total,anticipo:ant,costo:round2(costo),utilidad:round2(total-costo),pagos:pagos,creada:new Date().toISOString()};state.ventas.unshift(venta);state.folio=(state.folio||1)+1;save();aviso('✅ Venta '+venta.folio+' guardada','ok');resetNueva();renderDash();ver('ventas');}
+
+function renderVentas(){var q=($('buscar').value||'').toLowerCase().trim();var fc=$('filtroCond').value,fe=$('filtroEst').value;var list=(state.ventas||[]).filter(function(v){if(fc&&v.condicion!==fc)return false;if(fe==='pendiente'&&saldo(v)<=0.009)return false;if(fe==='liquidada'&&saldo(v)>0.009)return false;if(q){var txt=((v.folio||'')+' '+(v.cliente.nombre||'')+' '+(v.cliente.tel||'')).toLowerCase();if(txt.indexOf(q)===-1)return false;}return true;});var body=$('ventas-body');if(!list.length){body.innerHTML='<tr><td colspan="11" class="empty">No hay ventas.</td></tr>';return;}body.innerHTML=list.map(function(v){return '<tr><td><b>'+v.folio+'</b></td><td>'+fFecha(v.fecha)+'</td><td>'+esc(v.cliente.nombre)+'</td><td>'+badgeCond(v.condicion)+'</td><td>'+num(v.m2)+'</td><td><b>'+money(v.total)+'</b></td><td>'+money(pagado(v))+'</td><td class="'+(saldo(v)>0.009?'red':'green')+'">'+money(saldo(v))+'</td><td class="green">'+money(v.utilidad)+'</td><td>'+badgeEstado(v)+'</td><td><div class="actions"><button class="icobtn" title="Ver" onclick="verDetalle(\''+v.id+'\')">👁️</button><button class="icobtn" title="Pago" onclick="abrirPago(\''+v.id+'\')">💰</button><button class="icobtn" title="Estado esta venta" onclick="imprimir(\''+v.id+'\')">🖨️</button><button class="icobtn" title="Estado del CLIENTE" onclick="imprimirEstadoCliente(\''+v.id+'\')" style="background:#fef3c7">📋</button><button class="icobtn" title="Pagaré" onclick="imprimirPagare(\''+v.id+'\')">📝</button><button class="icobtn" title="Recibo" onclick="imprimirRecibo(\''+v.id+'\')">🧾</button><button class="icobtn" title="Eliminar" onclick="borrarVenta(\''+v.id+'\')">🗑️</button></div></td></tr>';}).join('');}
+
+function renderCobros(){var p=cobrosPend();var h=hoy();var tot=0,ven=0,sem=0;p.forEach(function(c){tot+=c.restante;if(c.vencida)ven+=c.restante;if(c.fecha>=h&&c.fecha<=addDias(h,7))sem+=c.restante;});$('cobros-kpis').innerHTML='<div class="kpi"><div class="ico a">⏳</div><div><small>Pendiente</small><strong>'+money(tot)+'</strong><small style="text-transform:none;font-weight:500">'+p.length+' cobro(s)</small></div></div>'+'<div class="kpi"><div class="ico r">⚠️</div><div><small>Vencido</small><strong>'+money(ven)+'</strong></div></div>'+'<div class="kpi"><div class="ico b">📅</div><div><small>Próx. 7 días</small><strong>'+money(sem)+'</strong></div></div>';var body=$('cobros-body');if(!p.length){body.innerHTML='<tr><td colspan="8" class="empty">🎉 Sin cobros pendientes</td></tr>';return;}body.innerHTML=p.map(function(c){return '<tr'+(c.vencida?' style="background:#fef2f2"':'')+'><td><b>'+esc(c.v.cliente.nombre)+'</b></td><td>'+c.v.folio+'</td><td>'+c.concepto+'</td><td>'+fFecha(c.fecha)+'</td><td>'+money(c.monto)+'</td><td><b>'+money(c.restante)+'</b></td><td>'+(c.vencida?'<span class="badge-tag badge-pd">Vencido</span>':'<span class="badge-tag badge-cr">Pendiente</span>')+'</td><td><div class="actions"><button class="btn btn-g btn-s" onclick="abrirPago(\''+c.v.id+'\','+c.restante+')">💵 Cobrar</button><button class="btn btn-o btn-s" onclick="imprimirRecibo(\''+c.v.id+'\')">🧾 Recibo</button></div></td></tr>';}).join('');}
+
+function histHoy(){$('hist-desde').value=hoy();$('hist-hasta').value=hoy();renderHistorial();}
+function histSemana(){var h=hoy();var d=new Date(h+'T00:00:00');var dia=d.getDay();var off=dia===0?6:dia-1;$('hist-desde').value=addDias(h,-off);$('hist-hasta').value=h;renderHistorial();}
+function histMes(){var h=hoy();var d=new Date(h+'T00:00:00');$('hist-desde').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01';$('hist-hasta').value=h;renderHistorial();}
+function histMesPasado(){var hoyD=new Date();var pd=new Date(hoyD.getFullYear(),hoyD.getMonth()-1,1);var ud=new Date(hoyD.getFullYear(),hoyD.getMonth(),0);$('hist-desde').value=pd.getFullYear()+'-'+String(pd.getMonth()+1).padStart(2,'0')+'-01';$('hist-hasta').value=ud.getFullYear()+'-'+String(ud.getMonth()+1).padStart(2,'0')+'-'+String(ud.getDate()).padStart(2,'0');renderHistorial();}
+function histAnio(){var h=hoy();var d=new Date(h+'T00:00:00');$('hist-desde').value=d.getFullYear()+'-01-01';$('hist-hasta').value=h;renderHistorial();}
+function histTodo(){$('hist-desde').value='';$('hist-hasta').value='';renderHistorial();}
+
+function renderHistorial(){var desde=$('hist-desde').value||'',hasta=$('hist-hasta').value||'';var enRango=function(f){if(!f)return false;if(desde&&f<desde)return false;if(hasta&&f>hasta)return false;return true;};var vp=(state.ventas||[]).filter(function(v){return enRango(v.fecha);});var tv=0,tc=0,tu=0;vp.forEach(function(v){tv+=v.total||0;tc+=v.costo||0;tu+=v.utilidad||0;});var cp=0;(state.ventas||[]).forEach(function(v){(v.pagos||[]).forEach(function(p){if(enRango(p.fecha))cp+=parseNum(p.monto);});});$('hist-kpis').innerHTML='<div class="kpi"><div class="ico b">🧾</div><div><small>Ventas</small><strong>'+money(tv)+'</strong><small style="text-transform:none;font-weight:500">'+vp.length+' venta(s)</small></div></div>'+'<div class="kpi"><div class="ico g">📈</div><div><small>Utilidad</small><strong>'+money(tu)+'</strong></div></div>'+'<div class="kpi"><div class="ico p">💰</div><div><small>Cobrado</small><strong>'+money(cp)+'</strong></div></div>'+'<div class="kpi"><div class="ico r">🏭</div><div><small>Pagos proveedor</small><strong>'+money(tc)+'</strong></div></div>';var body=$('hist-body');if(!vp.length){body.innerHTML='<tr><td colspan="10" class="empty">No hay ventas en el rango.</td></tr>';return;}body.innerHTML=vp.map(function(v){return '<tr><td><b>'+v.folio+'</b></td><td>'+fFecha(v.fecha)+'</td><td>'+esc(v.cliente.nombre)+'</td><td>'+badgeCond(v.condicion)+'</td><td><b>'+money(v.total)+'</b></td><td>'+money(pagado(v))+'</td><td class="'+(saldo(v)>0.009?'red':'green')+'">'+money(saldo(v))+'</td><td class="green">'+money(v.utilidad)+'</td><td class="muted">'+money(v.costo)+'</td><td>'+badgeEstado(v)+'</td></tr>';}).join('');}
+
+function abrirModal(t,html){$('modal-title').textContent=t;$('modal-body').innerHTML=html;$('modal').classList.add('open');}
+function cerrarModal(){$('modal').classList.remove('open');}
+
+function verDetalle(id){var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];if(!v){aviso('Venta no encontrada','err');return;}var cs=cuotas(v);var pgs=v.pagos||[];var pg=pagado(v);var sl=saldo(v);var itemsH=v.items.map(function(i){return '<tr><td>'+esc(i.telaNombre)+'</td><td>'+num(i.ancho)+'×'+num(i.alto)+'</td><td>'+num(i.m2||i.ancho*i.alto)+'</td><td>'+money(i.precioM2)+'</td><td>'+money(i.importe||(i.m2*i.precioM2+i.instPrecio))+'</td></tr>';}).join('');var cuotasH=cs.map(function(c){var b=c.estado==='pagada'?'<span class="badge-tag badge-p">Pagada</span>':c.estado==='parcial'?'<span class="badge-tag badge-pa">Parcial</span>':'<span class="badge-tag badge-pd">Pendiente</span>';return '<tr><td>'+c.concepto+'</td><td>'+fFecha(c.fecha)+'</td><td>'+money(c.monto)+'</td><td>'+b+'</td></tr>';}).join('');var pgsH=pgs.length?pgs.map(function(p){return '<tr><td>'+fFecha(p.fecha)+'</td><td>'+money(parseNum(p.monto))+'</td><td class="muted">'+esc(p.nota||'—')+'</td></tr>';}).join(''):'<tr><td colspan="3" class="empty">Sin pagos</td></tr>';var html='<div class="detail-grid"><div><div class="k">Cliente</div><div class="v">'+esc(v.cliente.nombre)+'</div></div><div><div class="k">Folio</div><div class="v">'+v.folio+'</div></div><div><div class="k">Dirección</div><div class="v">'+esc(v.cliente.dir||'—')+'</div></div><div><div class="k">Teléfono</div><div class="v">'+esc(v.cliente.tel||'—')+'</div></div><div><div class="k">Fecha</div><div class="v">'+fFecha(v.fecha)+'</div></div><div><div class="k">Condición</div><div class="v">'+badgeCond(v.condicion)+'</div></div><div><div class="k">Total</div><div class="v" style="color:#1e3a8a;font-size:16px">'+money(v.total)+'</div></div></div>'+'<h4 style="font-size:12px;text-transform:uppercase;color:#64748b;margin-bottom:8px">Persianas</h4>'+'<div class="table-wrap" style="margin-bottom:16px"><table style="min-width:0"><thead><tr><th>Tela</th><th>Medidas</th><th>m²</th><th>Precio</th><th>Importe</th></tr></thead><tbody>'+itemsH+'</tbody></table></div>'+'<h4 style="font-size:12px;text-transform:uppercase;color:#64748b;margin-bottom:8px">Pagos</h4>'+'<div class="pay-sum"><div><span class="k">Total</span><div class="v" style="color:#1e3a8a">'+money(v.total)+'</div></div><div><span class="k">Pagado</span><div class="v" style="color:#10b981">'+money(pg)+'</div></div><div><span class="k">Saldo</span><div class="v" style="color:'+(sl>0.009?'#ef4444':'#10b981')+'">'+money(sl)+'</div></div></div>'+'<div class="table-wrap" style="margin-bottom:16px"><table style="min-width:0"><thead><tr><th>Concepto</th><th>Vence</th><th>Monto</th><th>Estado</th></tr></thead><tbody>'+cuotasH+'</tbody></table></div>'+'<div class="table-wrap" style="margin-bottom:16px"><table style="min-width:0"><thead><tr><th>Fecha</th><th>Monto</th><th>Nota</th></tr></thead><tbody>'+pgsH+'</tbody></table></div>'+'<div style="display:flex;gap:8px;flex-wrap:wrap">'+(sl>0.009?'<button class="btn btn-g" onclick="cerrarModal();abrirPago(\''+v.id+'\')">💰 Registrar pago</button>':'')+'<button class="btn btn-p" onclick="imprimir(\''+v.id+'\')">🖨️ Estado esta venta</button>'+'<button class="btn btn-p" style="background:#f59e0b" onclick="imprimirEstadoCliente(\''+v.id+'\')">📋 Estado del CLIENTE</button>'+'<button class="btn btn-o" onclick="imprimirPagare(\''+v.id+'\')">📝 Pagaré</button>'+'<button class="btn btn-o" onclick="imprimirRecibo(\''+v.id+'\')">🧾 Recibo</button>'+'<button class="btn btn-o" onclick="cerrarModal()">Cerrar</button></div>';abrirModal('Detalle · '+v.folio,html);}
+
+function abrirPago(id,sugerido){var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];if(!v){aviso('Venta no encontrada','err');return;}var sl=saldo(v);if(sl<=0.009){aviso('Venta ya liquidada','err');return;}var prox=proxCuota(v);var defMonto=sugerido!=null?round2(sugerido):(prox?prox.restante:sl);var labProx=prox?'Próximo: <b>'+prox.concepto+'</b> ('+fFecha(prox.fecha)+')':'Saldo pendiente';var html='<div class="pay-sum"><div><span class="k">Total</span><div class="v" style="color:#1e3a8a">'+money(v.total)+'</div></div><div><span class="k">Pagado</span><div class="v" style="color:#10b981">'+money(pagado(v))+'</div></div><div><span class="k">Saldo</span><div class="v" style="color:#ef4444">'+money(sl)+'</div></div></div>'+'<p style="color:#64748b;font-size:13px;margin-bottom:12px">'+esc(v.cliente.nombre)+' · '+labProx+'</p>'+'<div class="form-grid"><div><label>Fecha</label><input type="date" id="pfecha" value="'+hoy()+'"></div><div><label>Monto</label><input type="text" id="pmonto" value="'+defMonto+'" onblur="normInput(this)"></div><div class="f2"><label>Nota (opcional)</label><input id="pnota" placeholder="Ej. Pago semana 1"></div></div>'+'<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn btn-g" onclick="guardarPago(\''+v.id+'\')">💾 Guardar pago</button><button class="btn btn-o" onclick="document.getElementById(\'pmonto\').value=\''+sl+'\'">Liquidar todo</button><button class="btn btn-o" onclick="cerrarModal()">Cancelar</button></div>';abrirModal('Registrar pago',html);}
+
+function guardarPago(id){var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];if(!v)return;var fec=$('pfecha').value||hoy();var monto=round2(parseNum($('pmonto').value));var nota=($('pnota').value||'').trim();var sl=saldo(v);if(monto<=0){aviso('Monto mayor a 0','err');return;}if(monto>sl+0.005){aviso('Excede el saldo ('+money(sl)+')','err');return;}v.pagos=v.pagos||[];v.pagos.push({fecha:fec,monto:monto,nota:nota||'Pago registrado'});save();cerrarModal();aviso('✅ Pago de '+money(monto)+' registrado','ok');renderDash();renderVentas();renderCobros();}
+
+function borrarVenta(id){var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];if(!v)return;if(!confirm('¿Eliminar venta '+v.folio+' de '+v.cliente.nombre+'?'))return;state.ventas=state.ventas.filter(function(x){return x.id!==id;});save();aviso('Venta eliminada','ok');renderDash();renderVentas();renderCobros();}
+
+function renderConfig(){var c=cfg();$('c-negocio').value=c.negocio||'';$('c-tel').value=c.tel||'';$('c-dir').value=c.dir||'';$('c-logo').value=c.logo||'';$('logo-prev').src=c.logo||DEFAULTS.logo;var sc=null,bl=null;for(var i=0;i<c.telas.length;i++){if(c.telas[i].id==='screen')sc=c.telas[i];if(c.telas[i].id==='blackout')bl=c.telas[i];}sc=sc||{precio:750,precioCredito:825,costo:350};bl=bl||{precio:800,precioCredito:880,costo:400};$('c-screen-p').value=sc.precio;$('c-screen-pcr').value=(sc.precioCredito>0)?sc.precioCredito:round2(sc.precio*(1+(c.recargo||10)/100));$('c-screen-c').value=sc.costo;$('c-black-p').value=bl.precio;$('c-black-pcr').value=(bl.precioCredito>0)?bl.precioCredito:round2(bl.precio*(1+(c.recargo||10)/100));$('c-black-c').value=bl.costo;$('c-recargo').value=c.recargo;$('c-ant-c').value=c.antContado;$('c-ant-cr').value=c.antCredito;$('c-semanas').value=c.semanas;$('c-inst-p').value=c.precioInst;$('c-inst-c').value=c.costoInst;}
+
+function aplicarRecargoManual(){var pct=parseNum($('c-recargo').value);var pS=parseNum($('c-screen-p').value);var pB=parseNum($('c-black-p').value);$('c-screen-pcr').value=round2(pS*(1+pct/100));$('c-black-pcr').value=round2(pB*(1+pct/100));aviso('Precios crédito recalculados (recargo '+pct+'%)','ok');}
+
+function guardarConfig(){var c=cfg();c.negocio=($('c-negocio').value||'').trim()||'GAETO FÁBRICA DE PERSIANAS';c.tel=($('c-tel').value||'').trim();c.dir=($('c-dir').value||'').trim();c.logo=($('c-logo').value||'').trim()||DEFAULTS.logo;c.recargo=parseNum($('c-recargo').value);var pS=parseNum($('c-screen-p').value);var pSc=parseNum($('c-screen-pcr').value);var cS=parseNum($('c-screen-c').value);var pB=parseNum($('c-black-p').value);var pBc=parseNum($('c-black-pcr').value);var cB=parseNum($('c-black-c').value);if(pSc<=0)pSc=round2(pS*(1+c.recargo/100));if(pBc<=0)pBc=round2(pB*(1+c.recargo/100));c.telas=[{id:'screen',nombre:'Screen',precio:pS,precioCredito:pSc,costo:cS},{id:'blackout',nombre:'Blackout',precio:pB,precioCredito:pBc,costo:cB}];c.antContado=parseNum($('c-ant-c').value);c.antCredito=parseNum($('c-ant-cr').value);c.semanas=parseInt(parseNum($('c-semanas').value),10)||4;c.precioInst=parseNum($('c-inst-p').value);c.costoInst=parseNum($('c-inst-c').value);save();$('marca').textContent=c.negocio;$('logo').src=c.logo;$('logo-prev').src=c.logo;if(!antTouched){sincAnticipo();recalc();}aviso('✅ Configuración guardada','ok');}
+
+function exportarJSON(){var blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gaeto-respaldo-'+hoy()+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},2000);aviso('Respaldo JSON descargado','ok');}
+
+function importarJSON(ev){var file=ev.target.files[0];if(!file)return;var r=new FileReader();r.onload=function(e){try{var s=JSON.parse(e.target.result);if(!s.config||!Array.isArray(s.ventas))throw new Error('Formato inválido');if(!confirm('Esto reemplaza los datos actuales. ¿Continuar?'))return;state=s;state.config=Object.assign({},JSON.parse(JSON.stringify(DEFAULTS)),state.config);if(state.config.telas){state.config.telas.forEach(function(t){if(t.precioCredito==null||t.precioCredito<=0)t.precioCredito=round2((t.precio||0)*(1+(state.config.recargo||10)/100));});}state.folio=state.folio||(state.ventas.length+1);save();$('marca').textContent=cfg().negocio;$('logo').src=cfg().logo;renderDash();renderVentas();renderCobros();renderHistorial();renderConfig();antTouched=false;sincAnticipo();recalc();aviso('Respaldo importado','ok');}catch(err){aviso('Archivo inválido: '+err.message,'err');}};r.readAsText(file);ev.target.value='';}
+
+function exportarCSV(){var headers=['Folio','Fecha','Cliente','Teléfono','Dirección','CP','Condición','Anticipo %','m²','Total','Anticipo','Pagado','Saldo','Costo','Utilidad','Estado'];var rows=(state.ventas||[]).map(function(v){return[v.folio,v.fecha,v.cliente.nombre,v.cliente.tel,v.cliente.dir,v.cliente.cp,v.condicion,v.anticipoPct,v.m2,v.total,v.anticipo,pagado(v),saldo(v),v.costo,v.utilidad,estado(v)];});var csv=[headers].concat(rows).map(function(r){return r.map(function(x){var s=String(x==null?'':x);return/[",\n;]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(',');}).join('\n');var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gaeto-ventas-'+hoy()+'.csv';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},2000);aviso('CSV descargado','ok');}
+
+function exportarExcel(){
+  if(!state.ventas.length){aviso('No hay ventas para exportar','err');return;}
+  var c=cfg();
+  var ahora=new Date().toLocaleString('es-MX');
+  var totV=0,totP=0,totC=0,totU=0;
+  state.ventas.forEach(function(v){totV+=v.total||0;totP+=pagado(v);totC+=v.costo||0;totU+=v.utilidad||0;});
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>table{border-collapse:collapse;font-family:Arial;font-size:11px}th{background:#1e3a8a;color:#fff;padding:6px 8px;border:1px solid #1e3a8a;text-align:left;font-weight:700}td{padding:4px 8px;border:1px solid #cbd5e1}.money{text-align:right}.title{font-size:16px;font-weight:700;color:#1e3a8a;margin:8px 0}.subtitle{font-size:13px;font-weight:700;color:#1e3a8a;margin:14px 0 6px}.total{background:#fef3c7;font-weight:700}.ok{background:#dcfce7;color:#166534;text-align:center}.pend{background:#fee2e2;color:#991b1b;text-align:center}.parc{background:#fef3c7;color:#92400e;text-align:center}</style></head><body>';
+  html+='<div class="title">'+esc(c.negocio)+' — Respaldo de datos</div>';
+  html+='<div style="font-size:11px;color:#64748b">Generado: '+ahora+'</div>';
+  html+='<div class="subtitle">📊 Resumen general</div>';
+  html+='<table><tr><th>Concepto</th><th>Monto</th></tr>';
+  html+='<tr><td>Total de ventas</td><td class="money">'+money(totV)+'</td></tr>';
+  html+='<tr><td>Total cobrado</td><td class="money">'+money(totP)+'</td></tr>';
+  html+='<tr><td>Total por cobrar</td><td class="money">'+money(totV-totP)+'</td></tr>';
+  html+='<tr><td>Costo del proveedor</td><td class="money">'+money(totC)+'</td></tr>';
+  html+='<tr class="total"><td>Utilidad bruta</td><td class="money">'+money(totU)+'</td></tr>';
+  html+='<tr><td>Número de ventas</td><td class="money">'+state.ventas.length+'</td></tr>';
+  html+='</table>';
+  html+='<div class="subtitle">🧾 Ventas</div>';
+  html+='<table><tr><th>Folio</th><th>Fecha</th><th>Cliente</th><th>Teléfono</th><th>Dirección</th><th>CP</th><th>Condición</th><th>Anticipo %</th><th>Piezas</th><th>m²</th><th>Total</th><th>Anticipo</th><th>Pagado</th><th>Saldo</th><th>Costo</th><th>Utilidad</th><th>Margen %</th><th>Estado</th></tr>';
+  state.ventas.forEach(function(v){
+    var pag=pagado(v),sal=saldo(v),marg=v.total>0?(v.utilidad/v.total*100):0,est=estado(v);
+    var estCls=est==='Liquidada'?'ok':(est==='Parcial'?'parc':'pend');
+    html+='<tr><td>'+esc(v.folio)+'</td><td>'+fFecha(v.fecha)+'</td><td>'+esc(v.cliente.nombre)+'</td><td>'+esc(v.cliente.tel||'')+'</td><td>'+esc(v.cliente.dir||'')+'</td><td>'+esc(v.cliente.cp||'')+'</td><td>'+(v.condicion==='credito'?'Crédito':'Contado')+'</td><td class="money">'+v.anticipoPct+'%</td><td class="money">'+v.items.length+'</td><td class="money">'+num(v.m2)+'</td><td class="money">'+money(v.total)+'</td><td class="money">'+money(v.anticipo)+'</td><td class="money">'+money(pag)+'</td><td class="money">'+money(sal)+'</td><td class="money">'+money(v.costo)+'</td><td class="money">'+money(v.utilidad)+'</td><td class="money">'+marg.toFixed(1)+'%</td><td class="'+estCls+'">'+est+'</td></tr>';
+  });
+  html+='</table>';
+  html+='<div class="subtitle">💰 Pagos registrados</div>';
+  html+='<table><tr><th>Folio venta</th><th>Cliente</th><th>Fecha pago</th><th>Monto</th><th>Nota</th></tr>';
+  var hayPagos=false;
+  state.ventas.forEach(function(v){(v.pagos||[]).forEach(function(p){hayPagos=true;html+='<tr><td>'+esc(v.folio)+'</td><td>'+esc(v.cliente.nombre)+'</td><td>'+fFecha(p.fecha)+'</td><td class="money">'+money(parseNum(p.monto))+'</td><td>'+esc(p.nota||'')+'</td></tr>';});});
+  if(!hayPagos)html+='<tr><td colspan="5" style="text-align:center">Sin pagos registrados</td></tr>';
+  html+='</table>';
+  html+='<div class="subtitle">🪟 Detalle de persianas</div>';
+  html+='<table><tr><th>Folio</th><th>Cliente</th><th>Tela</th><th>Ancho</th><th>Alto</th><th>m²</th><th>Precio m²</th><th>Importe</th><th>Costo m²</th><th>Costo total</th></tr>';
+  state.ventas.forEach(function(v){v.items.forEach(function(it){var s=it.ancho*it.alto;html+='<tr><td>'+esc(v.folio)+'</td><td>'+esc(v.cliente.nombre)+'</td><td>'+esc(it.telaNombre)+'</td><td class="money">'+num(it.ancho)+'</td><td class="money">'+num(it.alto)+'</td><td class="money">'+num(s)+'</td><td class="money">'+money(it.precioM2)+'</td><td class="money">'+money(it.importe)+'</td><td class="money">'+money(it.costoM2)+'</td><td class="money">'+money(it.costoTotal)+'</td></tr>';});});
+  html+='</table>';
+  var porMes={};
+  state.ventas.forEach(function(v){(v.pagos||[]).forEach(function(p){if(!p.fecha)return;var mes=p.fecha.slice(0,7);if(!porMes[mes])porMes[mes]=0;porMes[mes]+=parseNum(p.monto);});});
+  html+='<div class="subtitle">📅 Cobrado por mes</div>';
+  html+='<table><tr><th>Mes</th><th>Total cobrado</th></tr>';
+  var mesesOrd=Object.keys(porMes).sort();
+  mesesOrd.forEach(function(m){var partes=m.split('-');var fecha=new Date(parseInt(partes[0]),parseInt(partes[1])-1,1);var nombreMes=fecha.toLocaleDateString('es-MX',{month:'long',year:'numeric'});html+='<tr><td>'+nombreMes+'</td><td class="money">'+money(porMes[m])+'</td></tr>';});
+  html+='</table></body></html>';
+  var blob=new Blob(['\ufeff'+html],{type:'application/vnd.ms-excel;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='GAETO-respaldo-'+hoy()+'.xls';
+  a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
+  aviso('✅ Excel descargado ('+state.ventas.length+' ventas)','ok');
+}
+
+/* === ESTADO DE CUENTA POR VENTA === */
+function imprimir(id){
+  var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];
+  if(!v)return;
+  var c=cfg();var cs=cuotas(v);var pgs=v.pagos||[];var pg=pagado(v);var sl=saldo(v);
+  var itemsH=v.items.map(function(i){return '<tr><td>'+esc(i.telaNombre)+'</td><td>'+num(i.ancho)+' × '+num(i.alto)+' m</td><td style="text-align:center">'+num(i.m2||i.ancho*i.alto)+'</td><td style="text-align:right">'+money(i.precioM2)+'</td><td style="text-align:right">'+money(i.importe||(i.m2*i.precioM2+i.instPrecio))+'</td></tr>';}).join('');
+  var cuotasH=cs.map(function(x){var t=x.estado==='pagada'?'Pagada':(x.estado==='parcial'?'Parcial':'Pendiente');var cls=x.estado==='pagada'?'ok':(x.estado==='parcial'?'warn':'pend');return '<tr><td>'+x.concepto+'</td><td>'+fFecha(x.fecha)+'</td><td style="text-align:right">'+money(x.monto)+'</td><td><span class="st '+cls+'">'+t+'</span></td></tr>';}).join('');
+  var pgsH=pgs.length?pgs.map(function(p){return '<tr><td>'+fFecha(p.fecha)+'</td><td>'+esc(p.nota||'Pago')+'</td><td style="text-align:right">'+money(parseNum(p.monto))+'</td></tr>';}).join(''):'<tr><td colspan="3" style="text-align:center;color:#64748b;padding:8px">Sin pagos registrados</td></tr>';
+  var sColor=sl>0.009?'#b91c1c':'#15803d';var logo=c.logo||DEFAULTS.logo;
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Estado '+v.folio+'</title><style>@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:10.5px;line-height:1.3;color:#0f172a;padding:10px}.page{display:flex;flex-direction:column;min-height:275mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid #1e3a8a;padding-bottom:8px;margin-bottom:8px;gap:14px}.brand-block{display:flex;align-items:center;gap:14px}.brand-block img{width:110px;height:110px;object-fit:contain;border-radius:6px;flex-shrink:0}.brand-block h1{margin:0;font-size:16px;letter-spacing:.8px;color:#1e3a8a;line-height:1.2}.brand-block .sub{font-size:10px;color:#64748b;margin-top:2px}.doc{text-align:right}.doc .t{font-size:9px;letter-spacing:1.5px;color:#64748b;text-transform:uppercase;font-weight:700}.doc .f{font-weight:800;font-size:14px;color:#1e3a8a}.doc .d{font-size:9.5px;color:#64748b}h2{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;color:#475569;margin:6px 0 3px;padding-bottom:2px;border-bottom:1px solid #e2e8f0;font-weight:700}.sec{page-break-inside:avoid}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1px 20px;font-size:10px}.grid .k{color:#64748b;font-size:8.5px;text-transform:uppercase;letter-spacing:.3px;font-weight:700}.grid .v{font-weight:600}.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-size:9px;font-weight:700;background:#fef3c7;color:#92400e}.badge.c{background:#dcfce7;color:#166534}table{width:100%;border-collapse:collapse;font-size:9.5px}th{background:#f1f5f9;padding:3px 6px;text-align:left;font-size:8.5px;text-transform:uppercase;letter-spacing:.3px;color:#475569;font-weight:700}td{padding:3px 6px;border-bottom:1px solid #e2e8f0}.total{text-align:right;font-size:13px;font-weight:800;color:#1e3a8a;padding:3px 0}.sum{display:flex;gap:6px;margin:3px 0}.sum > div{flex:1;padding:5px 6px;border-radius:5px;background:#f8fafc;border:1px solid #e2e8f0;text-align:center}.sum .k{font-size:8px;text-transform:uppercase;color:#64748b;font-weight:700;display:block}.sum .v{font-size:12px;font-weight:800}.st{display:inline-block;padding:1px 6px;border-radius:999px;font-size:8.5px;font-weight:700;white-space:nowrap}.st.ok{background:#dcfce7;color:#166534}.st.warn{background:#fef3c7;color:#92400e}.st.pend{background:#fee2e2;color:#991b1b}.stamp{margin-top:auto;padding-top:50px;display:flex;gap:60px;justify-content:space-around;font-size:10.5px;color:#334155;text-align:center;page-break-inside:avoid}.stamp div{border-top:1.5px solid #475569;padding-top:8px;width:210px;font-weight:600}.foot{font-size:8.5px;color:#64748b;text-align:center;margin-top:16px;border-top:1px solid #e2e8f0;padding-top:6px}</style></head><body><div class="page">'+
+    '<div class="head"><div class="brand-block"><img src="'+logo+'"><div><h1>'+esc(c.negocio)+'</h1>'+(c.dir?'<div class="sub">'+esc(c.dir)+'</div>':'')+(c.tel?'<div class="sub">Tel. '+esc(c.tel)+'</div>':'')+'</div></div><div class="doc"><div class="t">Estado de cuenta</div><div class="f">'+v.folio+'</div><div class="d">Emitido: '+fFecha(hoy())+'</div></div></div>'+
+    '<div class="sec"><h2>Datos del cliente</h2><div class="grid"><div><div class="k">Cliente</div><div class="v">'+esc(v.cliente.nombre)+'</div></div><div><div class="k">Teléfono</div><div class="v">'+esc(v.cliente.tel||'—')+'</div></div><div><div class="k">Dirección</div><div class="v">'+esc(v.cliente.dir||'—')+'</div></div><div><div class="k">C.P.</div><div class="v">'+esc(v.cliente.cp||'—')+'</div></div><div><div class="k">Fecha venta</div><div class="v">'+fFecha(v.fecha)+'</div></div><div><div class="k">Condición</div><div class="v"><span class="badge '+(v.condicion==='contado'?'c':'')+'">'+(v.condicion==='contado'?'Contado':'Crédito')+'</span></div></div></div></div>'+
+    '<div class="sec"><h2>Detalle de persianas</h2><table><thead><tr><th>Tela</th><th>Medidas</th><th style="text-align:center">m²</th><th style="text-align:right">Precio m²</th><th style="text-align:right">Importe</th></tr></thead><tbody>'+itemsH+'</tbody></table><div class="total">TOTAL: '+money(v.total)+'</div></div>'+
+    '<div class="sec"><h2>Resumen de pagos</h2><div class="sum"><div><span class="k">Total</span><span class="v" style="color:#1e3a8a">'+money(v.total)+'</span></div><div><span class="k">Pagado</span><span class="v" style="color:#15803d">'+money(pg)+'</span></div><div><span class="k">Saldo</span><span class="v" style="color:'+sColor+'">'+money(sl)+'</span></div></div></div>'+
+    '<div class="sec"><h2>Calendario de pagos</h2><table><thead><tr><th>Concepto</th><th>Vence</th><th style="text-align:right">Monto</th><th>Estado</th></tr></thead><tbody>'+cuotasH+'</tbody></table></div>'+
+    '<div class="sec"><h2>Pagos registrados (incluye anticipo)</h2><table><thead><tr><th>Fecha</th><th>Concepto</th><th style="text-align:right">Monto</th></tr></thead><tbody>'+pgsH+'</tbody></table></div>'+
+    '<div class="stamp"><div>Firma del cliente</div><div>Firma por '+esc(c.negocio)+'</div></div>'+
+    '<div class="foot">Gracias por su preferencia · '+esc(c.negocio)+' · Documento informativo</div>'+
+  '</div></body></html>';
+  abrirPreview(html);
+}
+
+/* === ESTADO DE CUENTA DEL CLIENTE (firmas al fondo, hoja carta completa) === */
+function imprimirEstadoCliente(idVenta){
+  var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===idVenta)v=state.ventas[i];
+  if(!v){aviso('Venta no encontrada','err');return;}
+  var nombreCliente=(v.cliente.nombre||'').trim();
+  if(!nombreCliente){aviso('El cliente no tiene nombre','err');return;}
+  var ventasCli=(state.ventas||[]).filter(function(x){return (x.cliente.nombre||'').trim().toLowerCase()===nombreCliente.toLowerCase();}).sort(function(a,b){return (a.fecha||'').localeCompare(b.fecha||'');});
+  var movs=[];
+  ventasCli.forEach(function(vv){movs.push({fecha:vv.fecha,tipo:'cargo',concepto:'Compra '+vv.folio+' · '+(vv.condicion==='credito'?'Crédito':'Contado')+' · '+num(vv.m2)+' m²',monto:vv.total});(vv.pagos||[]).forEach(function(p){movs.push({fecha:p.fecha,tipo:'abono',concepto:'Pago '+vv.folio+(p.nota?' · '+p.nota:''),monto:parseNum(p.monto)});});});
+  movs.sort(function(a,b){return (a.fecha||'').localeCompare(b.fecha||'');});
+  var totCompras=0,totPagos=0;
+  ventasCli.forEach(function(vv){totCompras+=vv.total||0;});
+  movs.forEach(function(m){if(m.tipo==='abono')totPagos+=m.monto;});
+  var saldoFinal=round2(totCompras-totPagos);
+  var saldoCorrido=0;
+  var movsH=movs.map(function(m){if(m.tipo==='cargo')saldoCorrido+=m.monto;else saldoCorrido-=m.monto;return '<tr><td>'+fFecha(m.fecha)+'</td><td>'+esc(m.concepto)+'</td><td style="text-align:right">'+(m.tipo==='cargo'?money(m.monto):'')+'</td><td style="text-align:right">'+(m.tipo==='abono'?money(m.monto):'')+'</td><td style="text-align:right;font-weight:700">'+money(saldoCorrido)+'</td></tr>';}).join('');
+  if(!movs.length)movsH='<tr><td colspan="5" style="text-align:center;color:#64748b;padding:12px">Sin movimientos registrados</td></tr>';
+  var c=cfg();var logo=c.logo||DEFAULTS.logo;
+  var sColor=saldoFinal>0.009?'#b91c1c':'#15803d';
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Estado de cuenta cliente</title><style>@page{size:letter portrait;margin:8mm}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:10px;line-height:1.3;color:#0f172a;padding:0}.page{display:flex;flex-direction:column;min-height:255mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid #1e3a8a;padding-bottom:8px;margin-bottom:8px;gap:14px}.brand-block{display:flex;align-items:center;gap:14px}.brand-block img{width:100px;height:100px;object-fit:contain;border-radius:6px;flex-shrink:0}.brand-block h1{margin:0;font-size:15px;letter-spacing:.8px;color:#1e3a8a;line-height:1.2}.brand-block .sub{font-size:9.5px;color:#64748b;margin-top:2px}.doc{text-align:right}.doc .t{font-size:9px;letter-spacing:1.5px;color:#64748b;text-transform:uppercase;font-weight:700}.doc .f{font-weight:800;font-size:13px;color:#1e3a8a}.doc .d{font-size:9px;color:#64748b}.title-bar{text-align:center;margin:6px 0 8px;padding:5px;background:#1e3a8a;color:#fff;border-radius:5px;font-size:12px;letter-spacing:2px;font-weight:800}h2{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;color:#475569;margin:6px 0 3px;padding-bottom:2px;border-bottom:1px solid #e2e8f0;font-weight:700}.sec{page-break-inside:avoid}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1px 20px;font-size:9.5px}.grid .k{color:#64748b;font-size:8px;text-transform:uppercase;letter-spacing:.3px;font-weight:700}.grid .v{font-weight:600;font-size:10.5px}.resumen-box{display:flex;gap:6px;margin:6px 0}.resumen-box > div{flex:1;padding:8px;border-radius:6px;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center}.resumen-box .k{font-size:8px;text-transform:uppercase;color:#64748b;font-weight:700;display:block;letter-spacing:.3px}.resumen-box .v{font-size:15px;font-weight:800;margin-top:2px}table{width:100%;border-collapse:collapse;font-size:9px}th{background:#f1f5f9;padding:4px 6px;text-align:left;font-size:8px;text-transform:uppercase;letter-spacing:.3px;color:#475569;font-weight:700;border-bottom:1px solid #e2e8f0}td{padding:3px 6px;border-bottom:1px solid #f1f5f9;vertical-align:top}tbody tr:nth-child(even){background:#fafbfc}.total-final{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding:8px 12px;background:#1e3a8a;color:#fff;border-radius:6px;font-size:12px;font-weight:800}.total-final span:last-child{font-size:15px}.nota{background:#fffbeb;border-left:3px solid #f59e0b;padding:5px 8px;margin-top:5px;border-radius:4px;font-size:8.5px;color:#92400e;line-height:1.4;page-break-inside:avoid}.stamp{margin-top:auto;padding-top:30px;display:flex;gap:60px;justify-content:space-around;font-size:10px;color:#334155;text-align:center;page-break-inside:avoid;page-break-before:avoid}.stamp div{border-top:1.2px solid #475569;padding-top:6px;width:200px;font-weight:600}.foot{font-size:8px;color:#64748b;text-align:center;margin-top:10px;padding-top:5px;border-top:1px solid #e2e8f0;page-break-inside:avoid;page-break-before:avoid}@media print{body{padding:0}.page{min-height:0}}</style></head><body><div class="page">'+
+    '<div class="head"><div class="brand-block"><img src="'+logo+'"><div><h1>'+esc(c.negocio)+'</h1>'+(c.dir?'<div class="sub">'+esc(c.dir)+'</div>':'')+(c.tel?'<div class="sub">Tel. '+esc(c.tel)+'</div>':'')+'</div></div><div class="doc"><div class="t">Estado de cuenta</div><div class="f">Cliente</div><div class="d">Emitido: '+fFecha(hoy())+'</div></div></div>'+
+    '<div class="title-bar">ESTADO DE CUENTA DEL CLIENTE</div>'+
+    '<div class="sec"><h2>Datos del cliente</h2><div class="grid"><div><div class="k">Nombre</div><div class="v">'+esc(v.cliente.nombre)+'</div></div><div><div class="k">Teléfono</div><div class="v">'+esc(v.cliente.tel||'—')+'</div></div><div><div class="k">Dirección</div><div class="v">'+esc(v.cliente.dir||'—')+'</div></div><div><div class="k">C.P.</div><div class="v">'+esc(v.cliente.cp||'—')+'</div></div></div></div>'+
+    '<div class="sec"><h2>Resumen general</h2><div class="resumen-box"><div><span class="k">Compras</span><span class="v" style="color:#1e3a8a">'+money(totCompras)+'</span></div><div><span class="k">Pagos</span><span class="v" style="color:#15803d">'+money(totPagos)+'</span></div><div><span class="k">Saldo pendiente</span><span class="v" style="color:'+sColor+'">'+money(saldoFinal)+'</span></div></div><div style="font-size:9px;color:#64748b;margin-top:2px">Total de <b>'+ventasCli.length+'</b> venta(s) registradas a nombre del cliente</div></div>'+
+    '<div class="sec"><h2>Movimientos detallados</h2><table><thead><tr><th style="width:70px">Fecha</th><th>Concepto</th><th style="text-align:right;width:90px">Cargo (compra)</th><th style="text-align:right;width:90px">Abono (pago)</th><th style="text-align:right;width:90px">Saldo</th></tr></thead><tbody>'+movsH+'</tbody></table></div>'+
+    '<div class="total-final"><span>SALDO PENDIENTE TOTAL:</span><span>'+money(saldoFinal)+'</span></div>'+
+    '<div class="nota"><b>Nota:</b> Este documento es un estado de cuenta para confirmación y conciliación de saldos. Cualquier diferencia favor de reportarla con el vendedor para su revisión. El saldo mostrado corresponde a la fecha de emisión del presente documento.</div>'+
+    '<div class="stamp"><div>Firma del cliente (conformidad)</div><div>Firma por '+esc(c.negocio)+'</div></div>'+
+    '<div class="foot">'+esc(c.negocio)+' · Estado de cuenta generado el '+fFecha(hoy())+' · Documento informativo</div>'+
+  '</div></body></html>';
+  abrirPreview(html);
+}
+
+/* === NÚMERO A LETRAS === */
+function numeroALetras(n){var t=Math.abs(Number(n)||0);var e=Math.floor(t);var c=Math.round((t-e)*100);if(c===100){e++;c=0;}var cv=String(c).padStart(2,'0');if(e===0)return 'CERO PESOS '+cv+'/100 M.N.';return convertirEntero(e)+' PESOS '+cv+'/100 M.N.';}
+function convertirEntero(n){var u=['','UN','DOS','TRES','CUATRO','CINCO','SEIS','SIETE','OCHO','NUEVE','DIEZ','ONCE','DOCE','TRECE','CATORCE','QUINCE','DIECISÉIS','DIECISIETE','DIECIOCHO','DIECINUEVE','VEINTE','VEINTIÚN','VEINTIDÓS','VEINTITRÉS','VEINTICUATRO','VEINTICINCO','VEINTISÉIS','VEINTISIETE','VEINTIOCHO','VEINTINUEVE'];var d=['','','','TREINTA','CUARENTA','CINCUENTA','SESENTA','SETENTA','OCHENTA','NOVENTA'];var c=['','CIENTO','DOSCIENTOS','TRESCIENTOS','CUATROCIENTOS','QUINIENTOS','SEISCIENTOS','SETECIENTOS','OCHOCIENTOS','NOVECIENTOS'];function tres(x){if(x===0)return '';if(x===100)return 'CIEN';var o='',cn=Math.floor(x/100),r=x%100;if(cn>0)o+=c[cn];if(r>0){if(o)o+=' ';if(r<30)o+=u[r];else{var dc=Math.floor(r/10),un=r%10;o+=d[dc];if(un>0)o+=' Y '+u[un];}}return o;}if(n<1000)return tres(n);if(n<1000000){var m=Math.floor(n/1000),r=n%1000;var t=m===1?'MIL':tres(m)+' MIL';return t+(r>0?' '+tres(r):'');}if(n<1000000000){var mm=Math.floor(n/1000000),rr=n%1000000;var t2=mm===1?'UN MILLÓN':tres(mm)+' MILLONES';return t2+(rr>0?' '+convertirEntero(rr):'');}return String(n);}
+
+/* === PAGARÉ CON SALDO EN LETRAS === */
+function imprimirPagare(id){
+  var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];
+  if(!v)return;
+  var c=cfg();var sl=saldo(v);var ant=round2(v.anticipo||0);
+  var sem=v.semanas||cfg().semanas||4;
+  var cuotaSem=sem>0?round2((v.total-ant)/sem):0;
+  var logo=c.logo||DEFAULTS.logo;
+  var saldoLetras=numeroALetras(sl);
+  var itemsH=v.items.map(function(it){return '<tr><td>'+esc(it.telaNombre)+'</td><td>'+num(it.ancho)+' × '+num(it.alto)+' m</td><td style="text-align:center">'+num(it.m2||(it.ancho*it.alto))+'</td><td style="text-align:right">'+money(it.importe||((it.ancho*it.alto)*it.precioM2+it.instPrecio))+'</td></tr>';}).join('');
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Pagaré '+v.folio+'</title><style>@page{size:letter portrait;margin:8mm}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:10px;line-height:1.3;color:#0f172a;padding:10px}.page{max-width:195mm;margin:0 auto}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid #1e3a8a;padding-bottom:6px;margin-bottom:8px;gap:10px}.brand-block{display:flex;align-items:center;gap:10px}.brand-block img{width:80px;height:80px;object-fit:contain}.brand-block h1{margin:0;font-size:13px;color:#1e3a8a}.brand-block .sub{font-size:9px;color:#64748b}.doc-title{text-align:center;margin-bottom:8px;padding:5px;background:#1e3a8a;color:#fff;border-radius:5px}.doc-title h2{font-size:14px;letter-spacing:2px;margin:0;font-weight:800}.doc-title p{font-size:9px;margin-top:1px}.doc-meta{display:flex;justify-content:flex-end;gap:16px;margin-bottom:6px}.doc-meta div{text-align:right}.doc-meta .k{font-size:8px;color:#64748b;text-transform:uppercase;font-weight:700}.doc-meta .v{font-weight:800;color:#1e3a8a;font-size:12px}h3{font-size:9.5px;text-transform:uppercase;color:#1e3a8a;margin:6px 0 3px;padding-bottom:2px;border-bottom:1.2px solid #c7d2fe;font-weight:800}.field-line{display:flex;align-items:flex-end;gap:6px;margin-bottom:5px}.field-line .lbl{color:#334155;font-weight:700;white-space:nowrap;font-size:9.5px}.field-line .ln{flex:1;border-bottom:1.2px dotted #94a3b8;min-height:15px;padding:0 3px;font-weight:600}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}table{width:100%;border-collapse:collapse;font-size:9.5px;margin-bottom:4px}th{background:#eef2ff;padding:3px 6px;text-align:left;font-size:8.5px;text-transform:uppercase;color:#1e3a8a;font-weight:800;border-bottom:1px solid #c7d2fe}td{padding:3px 6px;border-bottom:1px solid #e2e8f0}.montos-box{border:2px solid #1e3a8a;border-radius:6px;padding:6px 12px;background:#f8faff;margin-bottom:6px}.montos-box .fila{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dotted #c7d2fe;font-size:10px}.montos-box .fila:last-child{border-bottom:none;padding-top:4px;margin-top:2px;border-top:1.5px solid #1e3a8a}.montos-box .lbl{font-weight:700;color:#334155}.montos-box .val{font-weight:800;color:#1e3a8a;font-size:11.5px}.montos-box .fila.destacada .lbl,.montos-box .fila.destacada .val{font-size:12px}.letra-saldo{margin-top:6px;padding-top:5px;border-top:1.2px dashed #3b82f6}.letra-saldo .lbl{font-size:9.5px;color:#1e40af;font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}.letra-saldo .auto{font-size:10.5px;font-weight:700;color:#0f172a;text-transform:uppercase;line-height:1.35;padding:3px 0;border-bottom:1.2px dotted #1e3a8a;min-height:18px}.checklist{margin-bottom:6px;padding:6px 10px;background:#fffbeb;border:1.2px solid #fcd34d;border-radius:6px}.checklist h4{font-size:9.5px;color:#92400e;margin-bottom:4px;text-transform:uppercase;font-weight:800}.checklist label{display:flex;align-items:center;gap:8px;margin-bottom:3px;font-size:10px;font-weight:600}.checklist input{width:13px;height:13px}.acepto{background:#eff6ff;border-left:3px solid #1e3a8a;padding:5px 10px;margin-bottom:6px;font-size:9.5px;line-height:1.4;color:#1e3a8a}.firmas{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:30px}.firma-block{text-align:center}.firma-block .linea{border-top:1.2px solid #0f172a;margin-top:35px;padding-top:4px}.firma-block .nombre{font-size:9.5px;font-weight:700;text-transform:uppercase}.firma-block .cargo{font-size:8.5px;color:#94a3b8;margin-top:1px}.foot{font-size:8px;color:#64748b;text-align:center;margin-top:10px;padding-top:4px;border-top:1px solid #e2e8f0}</style></head><body><div class="page">'+
+    '<div class="head"><div class="brand-block"><img src="'+logo+'"><div><h1>'+esc(c.negocio)+'</h1>'+(c.dir?'<div class="sub">'+esc(c.dir)+'</div>':'')+(c.tel?'<div class="sub">Tel. '+esc(c.tel)+'</div>':'')+'</div></div></div>'+
+    '<div class="doc-title"><h2>PAGARÉ DE COMPRA</h2><p>Documento de compromiso de pago</p></div>'+
+    '<div class="doc-meta"><div><div class="k">Folio</div><div class="v">'+v.folio+'</div></div><div><div class="k">Fecha</div><div class="v">'+fFecha(v.fecha)+'</div></div></div>'+
+    '<h3>Datos del cliente</h3>'+
+    '<div class="field-line"><span class="lbl">Nombre:</span><span class="ln">'+esc(v.cliente.nombre||'')+'</span></div>'+
+    '<div class="field-line"><span class="lbl">Dirección:</span><span class="ln">'+esc(v.cliente.dir||'')+'</span></div>'+
+    '<div class="field-row"><div class="field-line"><span class="lbl">Teléfono:</span><span class="ln">'+esc(v.cliente.tel||'')+'</span></div><div class="field-line"><span class="lbl">C.P.:</span><span class="ln">'+esc(v.cliente.cp||'')+'</span></div></div>'+
+    '<div class="field-line"><span class="lbl">INE (número):</span><span class="ln"></span></div>'+
+    '<h3>Descripción del producto</h3><table><thead><tr><th>Tela</th><th>Medidas</th><th style="text-align:center">m²</th><th style="text-align:right">Importe</th></tr></thead><tbody>'+itemsH+'</tbody></table>'+
+    '<h3>Resumen de la venta</h3>'+
+    '<div class="montos-box">'+
+      '<div class="fila"><span class="lbl">Total de la venta:</span><span class="val">'+money(v.total)+'</span></div>'+
+      '<div class="fila"><span class="lbl">Anticipo ('+v.anticipoPct+'%):</span><span class="val">'+money(ant)+'</span></div>'+
+      '<div class="fila"><span class="lbl">Saldo a financiar:</span><span class="val">'+money(sl)+'</span></div>'+
+      (v.condicion==='credito'&&sem>0?'<div class="fila destacada"><span class="lbl">Pago semanal ('+sem+' semanas):</span><span class="val">'+money(cuotaSem)+'</span></div>':'')+
+      '<div class="letra-saldo"><div class="lbl">Saldo pendiente a pagar (con letra):</div><div class="auto">'+esc(saldoLetras)+'</div></div>'+
+    '</div>'+
+    '<div class="acepto"><b>Declaración:</b> El cliente se compromete a pagar la cantidad señalada en el plazo acordado. Saldo en '+(v.condicion==='credito'?'<b>'+sem+' pagos semanales</b> de <b>'+money(cuotaSem)+'</b>':'un solo pago de <b>'+money(sl)+'</b>')+'.</div>'+
+    '<div class="checklist"><h4>✓ Check list — Documentos recibidos</h4>'+
+      '<label><input type="checkbox"> INE del cliente (copia o foto)</label>'+
+      '<label><input type="checkbox"> Comprobante de domicilio (copia o foto)</label>'+
+      '<label><input type="checkbox"> Otro: ______________________________________</label>'+
+    '</div>'+
+    '<div class="firmas"><div class="firma-block"><div class="linea"><div class="nombre">'+esc(v.cliente.nombre||'Cliente')+'</div><div class="cargo">Nombre y firma del cliente</div></div></div><div class="firma-block"><div class="linea"><div class="nombre">'+(c.negocio||'GAETO')+'</div><div class="cargo">Nombre y firma del vendedor</div></div></div></div>'+
+    '<div class="foot">Generado el '+fFecha(hoy())+' · '+esc(c.negocio)+'</div>'+
+  '</div></body></html>';
+  abrirPreview(html);
+}
+
+/* === RECIBO DE PAGO (firmas al fondo, hoja carta completa) === */
+function imprimirRecibo(id){
+  var v=null;for(var i=0;i<state.ventas.length;i++)if(state.ventas[i].id===id)v=state.ventas[i];
+  if(!v)return;
+  var c=cfg();var logo=c.logo||DEFAULTS.logo;
+  var folioRecibo='REC-'+(v.folio||'').replace('GAETO-','');
+  var cs=cuotas(v);var filasSem=cs.filter(function(x){return x.concepto!=='Anticipo';});
+  var cuotasHTML='';
+  if(filasSem.length){cuotasHTML=filasSem.map(function(x){var estTxt,estCls;if(x.estado==='pagada'){estTxt='Pagada';estCls='ok';}else if(x.estado==='parcial'){estTxt='Parcial';estCls='warn';}else{estTxt='Pendiente';estCls='pend';}return '<tr><td>'+x.concepto+'</td><td>'+fFecha(x.fecha)+'</td><td style="text-align:right">'+money(x.monto)+'</td><td style="text-align:right">'+money(x.restante)+'</td><td style="text-align:center"><span class="est '+estCls+'">'+estTxt+'</span></td></tr>';}).join('');}else cuotasHTML='<tr><td colspan="5" style="text-align:center;color:#64748b;padding:6px">Venta de contado — sin pagos semanales</td></tr>';
+  var saldoActual=saldo(v);var pagadoTotal=pagado(v);
+  var html='<!DOCTYPE html><html><head><meta charset="utf-8"><title>Recibo '+folioRecibo+'</title><style>@page{size:letter portrait;margin:6mm}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:10px;line-height:1.25;color:#0f172a;padding:0}.page{max-width:200mm;margin:0 auto;display:flex;flex-direction:column;min-height:255mm}.head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1e3a8a;padding-bottom:5px;margin-bottom:6px;gap:10px}.brand-block{display:flex;align-items:center;gap:10px}.brand-block img{width:60px;height:60px;object-fit:contain}.brand-block .info h1{margin:0;font-size:12px;color:#1e3a8a;line-height:1.15}.brand-block .info .sub{font-size:8.5px;color:#64748b}.head .doc{text-align:right}.head .doc .t{font-size:9px;letter-spacing:1.2px;color:#64748b;text-transform:uppercase;font-weight:800}.head .doc .f{font-weight:800;font-size:13px;color:#1e3a8a}.title-bar{text-align:center;background:#1e3a8a;color:#fff;padding:4px;border-radius:4px;margin-bottom:6px;font-size:12px;letter-spacing:2.5px;font-weight:800}.folio-fecha{display:flex;justify-content:space-between;font-size:10px;margin-bottom:6px;padding:4px 8px;background:#f8fafc;border-radius:4px;border:1px solid #e2e8f0}.folio-fecha .k{color:#64748b;font-size:8px;text-transform:uppercase;font-weight:700;display:block}.folio-fecha .v{font-weight:800;color:#1e3a8a;font-size:11px}.folio-fecha .blank{font-weight:800;color:#1e3a8a;font-size:11px;border-bottom:1.2px dotted #94a3b8;min-width:100px;display:inline-block;padding:0 6px}.field{display:flex;align-items:flex-end;gap:6px;margin-bottom:5px}.field .lbl{color:#334155;font-weight:700;white-space:nowrap;min-width:60px;font-size:9.5px}.field .ln{flex:1;border-bottom:1.2px dotted #94a3b8;min-height:16px;padding:0 5px;font-weight:700;font-size:10.5px}.monto-box{border:2px solid #1e3a8a;border-radius:6px;padding:6px 10px;background:#f8faff;margin:6px 0}.monto-box .lbl{font-size:10px;color:#334155;font-weight:800;text-transform:uppercase;margin-bottom:4px}.monto-box .cifra{display:flex;align-items:center;gap:6px;margin-bottom:6px}.monto-box .cifra .signo{font-size:20px;font-weight:800;color:#1e3a8a}.monto-box .cifra .linea{flex:1;border-bottom:2px solid #1e3a8a;height:22px}.monto-box .letra-lbl{font-size:9px;color:#334155;font-weight:800;text-transform:uppercase;margin-bottom:3px}.monto-box .letra-ln{border-bottom:1px dotted #64748b;min-height:15px;margin-bottom:2px}.monto-box .letra-pie{font-size:8.5px;color:#64748b;text-align:right;font-style:italic}.concepto{margin-bottom:6px}.concepto .lbl{font-size:9.5px;color:#334155;font-weight:800;text-transform:uppercase;margin-bottom:4px}.concepto .opciones{display:grid;grid-template-columns:1fr 1fr;gap:4px}.concepto label{display:flex;align-items:center;gap:6px;padding:4px 8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;font-size:10px;font-weight:600}.concepto input{width:12px;height:12px}.concepto .otro-input{flex:1;border-bottom:1px solid #94a3b8;min-height:12px;margin-left:3px}.referencia{border:1.2px solid #3b82f6;border-radius:6px;padding:5px 8px;background:#eff6ff;margin-bottom:6px}.referencia h3{font-size:9.5px;color:#1e40af;text-transform:uppercase;margin-bottom:4px;font-weight:800}.referencia table{width:100%;border-collapse:collapse;font-size:9px;margin-bottom:4px}.referencia th{background:#dbeafe;padding:2px 5px;text-align:left;font-size:8px;text-transform:uppercase;color:#1e40af;font-weight:800;border-bottom:1px solid #93c5fd}.referencia td{padding:2px 5px;border-bottom:1px solid #dbeafe;background:#fff}.referencia .est{display:inline-block;padding:1px 5px;border-radius:999px;font-size:8px;font-weight:700}.referencia .est.ok{background:#dcfce7;color:#166534}.referencia .est.warn{background:#fef3c7;color:#92400e}.referencia .est.pend{background:#fee2e2;color:#991b1b}.referencia .resumen{display:flex;justify-content:space-between;font-size:9px;padding-top:4px;border-top:1px solid #93c5fd;margin-top:2px}.referencia .resumen span{font-weight:700;color:#1e40af}.referencia .resumen span b{color:#0f172a}.obs{margin-bottom:6px}.obs .lbl{font-size:9px;color:#334155;font-weight:800;text-transform:uppercase;margin-bottom:3px}.obs .ln{min-height:28px;border:1px solid #cbd5e1;border-radius:4px;padding:4px;background:#fff}.firmas{margin-top:auto;padding-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:30px;page-break-inside:avoid;page-break-before:avoid}.firma-block{text-align:center}.firma-block .linea{border-top:1.2px solid #0f172a;margin-top:32px;padding-top:4px}.firma-block .nombre{font-size:9.5px;text-transform:uppercase;font-weight:800}.firma-block .cargo{font-size:8.5px;color:#64748b}.foot{font-size:8px;color:#64748b;text-align:center;margin-top:8px;padding-top:4px;border-top:1px solid #e2e8f0;page-break-inside:avoid;page-break-before:avoid}@media print{body{padding:0}.page{min-height:0}}</style></head><body><div class="page">'+
+    '<div class="head"><div class="brand-block"><img src="'+logo+'"><div class="info"><h1>'+esc(c.negocio)+'</h1>'+(c.dir?'<div class="sub">'+esc(c.dir)+'</div>':'')+(c.tel?'<div class="sub">Tel. '+esc(c.tel)+'</div>':'')+'</div></div><div class="doc"><div class="t">Recibo</div><div class="f">'+folioRecibo+'</div></div></div>'+
+    '<div class="title-bar">RECIBO DE PAGO</div>'+
+    '<div class="folio-fecha"><div><span class="k">Folio</span><div class="v">'+folioRecibo+'</div></div><div style="text-align:right"><span class="k">Fecha</span><div class="blank">&nbsp;</div></div></div>'+
+    '<div class="field"><span class="lbl">Recibí de:</span><span class="ln">'+esc(v.cliente.nombre||'')+'</span></div>'+
+    '<div class="field"><span class="lbl">Domicilio:</span><span class="ln">'+esc(v.cliente.dir||'')+'</span></div>'+
+    '<div class="field"><span class="lbl">Teléfono:</span><span class="ln">'+esc(v.cliente.tel||'')+'</span></div>'+
+    '<div class="monto-box"><div class="lbl">Recibí la cantidad de:</div><div class="cifra"><span class="signo">$</span><span class="linea"></span></div><div class="letra-lbl">Cantidad con letra:</div><div class="letra-ln"></div><div class="letra-ln"></div><div class="letra-pie">Pesos 00/100 M.N.</div></div>'+
+    '<div class="concepto"><div class="lbl">Por concepto de:</div><div class="opciones">'+
+      '<label><input type="checkbox"> Pago semanal de persianas</label>'+
+      '<label><input type="checkbox"> Abono a cuenta de persianas</label>'+
+      '<label><input type="checkbox"> Liquidación total de persianas</label>'+
+      '<label><input type="checkbox"> Anticipo de persianas</label>'+
+      '<label style="grid-column:span 2"><input type="checkbox"> Otro: <span class="otro-input"></span></label>'+
+    '</div></div>'+
+    '<div class="referencia"><h3>📅 Referencia de pagos semanales — Venta '+v.folio+'</h3><table><thead><tr><th>Concepto</th><th>Vence</th><th style="text-align:right">Monto</th><th style="text-align:right">Restante</th><th style="text-align:center">Estado</th></tr></thead><tbody>'+cuotasHTML+'</tbody></table>'+
+      '<div class="resumen"><span>Total venta: <b>'+money(v.total)+'</b></span><span>Pagado: <b>'+money(pagadoTotal)+'</b></span><span>Saldo actual: <b>'+money(saldoActual)+'</b></span></div></div>'+
+    '<div class="obs"><div class="lbl">Observaciones:</div><div class="ln"></div></div>'+
+    '<div class="firmas"><div class="firma-block"><div class="linea"><div class="nombre">'+(c.negocio||'GAETO')+'</div><div class="cargo">Nombre y firma de quien recibe</div></div></div><div class="firma-block"><div class="linea"><div class="nombre">'+esc(v.cliente.nombre||'Cliente')+'</div><div class="cargo">Nombre y firma del cliente</div></div></div></div>'+
+    '<div class="foot">Generado el '+fFecha(hoy())+' · '+esc(c.negocio)+'</div>'+
+  '</div></body></html>';
+  abrirPreview(html);
+}
+
+function borrarTodo(){if(!confirm('¿Borrar TODAS las ventas y configuración?'))return;if(!confirm('Última confirmación: se perderán todos los datos.'))return;localStorage.removeItem(KEY);state={config:JSON.parse(JSON.stringify(DEFAULTS)),ventas:[],folio:1};save();$('marca').textContent=cfg().negocio;$('logo').src=cfg().logo;antTouched=false;resetNueva();renderDash();renderVentas();renderCobros();renderHistorial();renderConfig();aviso('Datos borrados','ok');}
+
+(function init(){
+  var d=new Date();
+  $('fecha-hoy').textContent=d.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  $('marca').textContent=cfg().negocio;
+  $('logo').src=cfg().logo||DEFAULTS.logo;
+  var primerDia=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01';
+  $('hist-desde').value=primerDia;
+  $('hist-hasta').value=hoy();
+  resetNueva();
+  renderDash();
+})();
+</script>
+</body>
+</html>
